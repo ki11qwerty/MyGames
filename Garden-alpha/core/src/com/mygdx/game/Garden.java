@@ -2,26 +2,70 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.util.Random;
+
 public class Garden extends ApplicationAdapter {
 	SpriteBatch batch;
-	Texture img;
-	
+	private final int MAP_SIZE_X = 1350 / 50 ;
+	private final int MAP_SIZE_Y = 750 / 50 ;
+    MyMap map;
+    Hero hero;
+    Random rand = new Random();
+    int nextBlockSwaping = 0;
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+	    map =  new MyMap(MAP_SIZE_X, MAP_SIZE_Y);
+	    hero = new Hero(10);
 	}
 
 	@Override
 	public void render () {
+		update();
+		hero.update();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		batch.draw(img, 688 - (img.getWidth() / 2), 384 - (img.getHeight() / 2) );
+		for(int i=0; i<map.myMapArr.length;i++){
+		    for(int j=0; j<map.myMapArr[0].length; j++){
+		        batch.draw(map.myMapArr[i][j], i*map.myMapArr[i][j].getWidth()
+                        , j * map.myMapArr[i][j].getHeight());
+            }
+        }
+        batch.draw(hero.img, hero.Xposition , hero.Yposition);
+
 		batch.end();
 	}
+	public void update(){
+        if(Gdx.input.isKeyPressed(Input.Keys.W)) {
+            hero.Yposition += hero.speed;
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.S)){
+            hero.Yposition -= hero.speed;
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.D)){
+            hero.Xposition += hero.speed;
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.A)){
+            hero.Xposition -= hero.speed;
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+            map.swapTexture(hero.Xposition / 50, hero.Yposition /50, nextBlockSwaping);
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)){
+            nextBlockSwaping =1;
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_2)){
+            nextBlockSwaping = 2;
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_3)){
+            System.out.println("3");;
+            nextBlockSwaping = 3;
+        }
+    }
 }

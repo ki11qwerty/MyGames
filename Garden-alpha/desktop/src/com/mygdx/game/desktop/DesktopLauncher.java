@@ -9,8 +9,8 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		new LwjglApplication(new Garden(), config);
 		config.fullscreen = false;
-		config.height = 768;
-		config.width = 1366;
+		config.height = 750;
+		config.width = 1350;
 
 	}
 }
