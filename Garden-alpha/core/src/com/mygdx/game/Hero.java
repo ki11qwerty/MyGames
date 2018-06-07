@@ -5,9 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
-import java.security.Key;
 
-public class Hero {
+public class Hero implements MyConstSettings {
     Texture img;
     int speed;
     int Xposition;
@@ -23,7 +22,11 @@ public class Hero {
     public void update() {
         if (Xposition < 0)
             Xposition = 0;
+        if (Xposition > WIDTH_WINDOW-25)
+            Xposition =  WIDTH_WINDOW-25;
         if (Yposition < 0)
             Yposition = 0;
+        if (Yposition > HEIGHT_WINDOW-25)
+            Yposition = HEIGHT_WINDOW-25;
     }
 }
