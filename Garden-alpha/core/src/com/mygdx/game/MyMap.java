@@ -36,21 +36,30 @@ public class MyMap {
     public void render(SpriteBatch batch){
 
     }
-    public void swapTexture(int i , int j, int nextBlockSwaping){
-        switch (nextBlockSwaping){
-            case(1):{
-                myMapArr[i][j] = myTexture1;
-                break;
-            }
-            case(2):{
-                myMapArr[i][j] = myTexture2;
-                break;
-            }
-            case(3):{
-                myMapArr[i][j] = myTexture3;
-                break;
+    public void swapTexture(int i , int j, int nextBlockSwaping) {
+        if (checkArray(i, j) == true) {
+            switch (nextBlockSwaping) {
+                case (1): {
+                    myMapArr[i][j] = myTexture1;
+                    break;
+                }
+                case (2): {
+                    myMapArr[i][j] = myTexture2;
+                    break;
+                }
+                case (3): {
+                    myMapArr[i][j] = myTexture3;
+                    break;
+                }
             }
         }
+        else return;
+    }
+    public boolean   checkArray(int i, int j){
+        if(i>myMapArr.length -1 || j>myMapArr[0].length -1 || i<0 || j<0 )
+            return false;
+        else
+            return true;
     }
     public void update(){
 
