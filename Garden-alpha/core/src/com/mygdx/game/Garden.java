@@ -57,13 +57,13 @@ public class Garden extends ApplicationAdapter {
             nextBlockSwaping = 3;
         }
         if (Gdx.input.isTouched()) {
-            System.out.println(" "+Gdx.input.getX() / 50+", "+(Gdx.graphics.getHeight() - Gdx.input.getY()) / 50);
-            map.swapTexture(Gdx.input.getX() / 50 , (Gdx.graphics.getHeight() -Gdx.input.getY()) / 50 ,
+            System.out.println(" " + Gdx.input.getX() / 50 + ", " + (Gdx.graphics.getHeight() - Gdx.input.getY()) / 50);
+            map.swapTexture(Gdx.input.getX() / 50, (Gdx.graphics.getHeight() - Gdx.input.getY()) / 50,
                     nextBlockSwaping);
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             map.swapTexture(hero.Xposition / 50, hero.Yposition / 50, nextBlockSwaping);
-            System.out.println(" "+hero.Xposition / 50+", "+hero.Yposition / 50);
+            System.out.println(" " + hero.Xposition / 50 + ", " + hero.Yposition / 50);
         }
     }
 }

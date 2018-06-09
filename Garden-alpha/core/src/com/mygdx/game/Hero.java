@@ -22,12 +22,12 @@ public class Hero implements MyConstSettings {
     public void update() {
         if (Xposition < 0)
             Xposition = 0;
-        if (Xposition > WIDTH_WINDOW-25)
-            Xposition =  WIDTH_WINDOW-25;
+        if (Xposition > WIDTH_WINDOW - 25)
+            Xposition = WIDTH_WINDOW - 25;
         if (Yposition < 0)
             Yposition = 0;
-        if (Yposition > HEIGHT_WINDOW-25)
-            Yposition = HEIGHT_WINDOW-25;
+        if (Yposition > HEIGHT_WINDOW - 25)
+            Yposition = HEIGHT_WINDOW - 25;
 
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             Yposition += speed;

@@ -22,21 +22,23 @@ public class MyMap {
                 if(i ==0 || i == sizeX-1 || j == 0 || j == sizeY -1){
                     myMapArr[i][j] = myTexture3;
                 continue;}
-                if (Math.random()*1 > 0.5)
-                    myMapArr[i][j]= myTexture1;
+                if (Math.random() * 1 > 0.5)
+                    myMapArr[i][j] = myTexture1;
                 else
-                    myMapArr[i][j]= myTexture2;
+                    myMapArr[i][j] = myTexture2;
             }
         }
     }
-    public Texture[][] getMyMapArr(){
+
+    public Texture[][] getMyMapArr() {
         return myMapArr;
     }
 
-    public void render(SpriteBatch batch){
+    public void render(SpriteBatch batch) {
 
     }
-    public void swapTexture(int i , int j, int nextBlockSwaping) {
+
+    public void swapTexture(int i, int j, int nextBlockSwaping) {
         if (checkArray(i, j) == true) {
             switch (nextBlockSwaping) {
                 case (1): {
@@ -52,16 +54,17 @@ public class MyMap {
                     break;
                 }
             }
-        }
-        else return;
+        } else return;
     }
-    public boolean   checkArray(int i, int j){
-        if(i>myMapArr.length -1 || j>myMapArr[0].length -1 || i<0 || j<0 )
+
+    public boolean checkArray(int i, int j) {
+        if (i > myMapArr.length - 1 || j > myMapArr[0].length - 1 || i < 0 || j < 0)
             return false;
         else
             return true;
     }
-    public void update(){
+
+    public void update() {
 
     }
 }
