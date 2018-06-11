@@ -10,7 +10,6 @@ public class MyMap {
     private Texture myTexture1;
     private Texture myTexture2;
     private Texture myTexture3;
-    private Vector2 position;
     Texture[][] myMapArr;
     public MyMap(int sizeX , int sizeY){
         this.myTexture1 = new Texture("green1.png");
