@@ -14,6 +14,7 @@ public class Garden extends ApplicationAdapter {
     private final int MAP_SIZE_Y = 750 / 50;
     MyMap map;
     Hero hero;
+    Constructions constructions;
     Random rand = new Random();
     int nextBlockSwaping = 0;
 
@@ -22,12 +23,12 @@ public class Garden extends ApplicationAdapter {
         batch = new SpriteBatch();
         map = new MyMap(MAP_SIZE_X, MAP_SIZE_Y);
         hero = new Hero(10);
+        constructions = new Constructions(MAP_SIZE_X,MAP_SIZE_Y);
     }
 
     @Override
     public void render() {
         update();
-        hero.update();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
@@ -37,13 +38,14 @@ public class Garden extends ApplicationAdapter {
                         , j * map.myMapArr[i][j].getHeight());
             }
         }
+        constructions.render(batch);
         batch.draw(hero.img, hero.Xposition, hero.Yposition);
 
         batch.end();
     }
 
     public void update() {
-
+        hero.update();
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {
             nextBlockSwaping = 1;
         }
