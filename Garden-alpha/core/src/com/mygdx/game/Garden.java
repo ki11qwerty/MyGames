@@ -8,22 +8,22 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.Random;
 
-public class Garden extends ApplicationAdapter {
+public class Garden extends ApplicationAdapter implements MyConstSettings {
     SpriteBatch batch;
-    private final int MAP_SIZE_X = 1350 / 50;
-    private final int MAP_SIZE_Y = 750 / 50;
     MyMap map;
     Hero hero;
     Constructions constructions;
     Random rand = new Random();
+    Thread thread2 = new Thread("thread2");
     int nextBlockSwaping = 0;
+    int constructNum = 0;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
-        map = new MyMap(MAP_SIZE_X, MAP_SIZE_Y);
+        map = new MyMap(SIZE_X, SIZE_Y);
         hero = new Hero(10);
-        constructions = new Constructions(MAP_SIZE_X,MAP_SIZE_Y);
+        constructions = new Constructions(SIZE_X, SIZE_Y);
     }
 
     @Override
@@ -32,14 +32,9 @@ public class Garden extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        for (int i = 0; i < map.myMapArr.length; i++) {
-            for (int j = 0; j < map.myMapArr[0].length; j++) {
-                batch.draw(map.myMapArr[i][j], i * map.myMapArr[i][j].getWidth()
-                        , j * map.myMapArr[i][j].getHeight());
-            }
-        }
-        constructions.render(batch);
-        batch.draw(hero.img, hero.Xposition, hero.Yposition);
+        map.render(batch);           //отрисовка массив-карты
+        constructions.render(batch); // отрисовка строений
+        batch.draw(hero.img, hero.Xposition, hero.Yposition);  //отрисовка героя на карте
 
         batch.end();
     }
@@ -54,17 +49,40 @@ public class Garden extends ApplicationAdapter {
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_3)) {
             System.out.println("3");
-            ;
             nextBlockSwaping = 3;
         }
-        if (Gdx.input.isTouched()) {
-            System.out.println(" " + Gdx.input.getX() / 50 + ", " + (Gdx.graphics.getHeight() - Gdx.input.getY()) / 50);
-            map.swapTexture(Gdx.input.getX() / 50, (Gdx.graphics.getHeight() - Gdx.input.getY()) / 50,
-                    nextBlockSwaping);
+        if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_4)) {
+            System.out.println("4");
+            constructNum = 1;
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            map.swapTexture(hero.Xposition / 50, hero.Yposition / 50, nextBlockSwaping);
-            System.out.println(" " + hero.Xposition / 50 + ", " + hero.Yposition / 50);
+        if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_5)) {
+            System.out.println("5");
+            constructNum = 0;
+        }
+        if (Gdx.input.justTouched()) {          //свап-блок для мышки
+            if (constructNum == 0) {
+                System.out.println(" " + Gdx.input.getX() / 50 + ", " + (Gdx.graphics.getHeight() - Gdx.input.getY()) / 50);
+                map.swapTexture(Gdx.input.getX() / 50, (Gdx.graphics.getHeight() - Gdx.input.getY()) / 50,
+                        nextBlockSwaping);
+            }
+        }
+        if (Gdx.input.justTouched()) {         //стройка для мышки
+            if (constructNum != 0) {
+                System.out.println(" " + Gdx.input.getX() / 50 + ", " + (Gdx.graphics.getHeight() - Gdx.input.getY()) / 50);
+                constructions.build(Gdx.input.getX() / 50, (Gdx.graphics.getHeight() - Gdx.input.getY()) / 50,
+                        constructNum);
+            }
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {     //свап-блок для позиции героя
+            if (constructNum == 0) {
+                map.swapTexture(hero.Xposition / 50, hero.Yposition / 50, nextBlockSwaping);
+            }
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {     //стройка для позиции героя
+            if (constructNum != 0) {
+                constructions.build(hero.Xposition / 50, hero.Yposition / 50,
+                        constructNum);
+            }
         }
     }
 }

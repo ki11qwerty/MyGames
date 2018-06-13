@@ -13,19 +13,19 @@ public class Hero implements MyConstSettings {
     public Hero(int speed) {
         this.img = new Texture("Hero.png");
         this.speed = speed;
-        this.Xposition = (1300 / 2);
-        this.Yposition = (750 / 2);
+        this.Xposition = (SIZE_X / 2);
+        this.Yposition = (SIZE_Y / 2);
     }
 
     public void update() {
         if (Xposition < 0)
             Xposition = 0;
-        if (Xposition > WIDTH_WINDOW - 25)
-            Xposition = WIDTH_WINDOW - 25;
+        if (Xposition > WIDTH_WINDOW - img.getWidth())
+            Xposition = WIDTH_WINDOW - img.getWidth();
         if (Yposition < 0)
             Yposition = 0;
-        if (Yposition > HEIGHT_WINDOW - 25)
-            Yposition = HEIGHT_WINDOW - 25;
+        if (Yposition > HEIGHT_WINDOW - img.getHeight())
+            Yposition = HEIGHT_WINDOW - img.getHeight();
 
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             Yposition += speed;
