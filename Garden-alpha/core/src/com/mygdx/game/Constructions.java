@@ -11,6 +11,7 @@ public class Constructions extends Thread {
     volatile int buildX = 0;
     volatile int buildY = 0;
     volatile int buildType = 0;
+    boolean buildInProgress = false;
 
     public Constructions(int sizeX, int sizeY) {
         nullPng = new Texture("null.png");
@@ -42,47 +43,35 @@ public class Constructions extends Thread {
     @Override
     public void run() {                                       //костыль продашн сука
         System.out.println("вошли в ран");
-        if (buildX == 0 && buildY == 0 && buildType == 0) {
-            System.out.println("прошли иф");
-            try {
-                Thread.sleep(500);
-                System.out.println("после сна");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            switch (buildType) {
-                case (1): { //powerStation
-                    for (int i = 0; i < 3; i++) {
-                        constMap[buildX][buildY] = powerStation[i];
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+        switch (buildType) {
+            case (1): { //powerStation
+                for (int i = 0; i < 2; i++) {
+                    constMap[buildX][buildY] = powerStation[i]; //две отрисовки с ожиданием
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                    buildX = 0;
-                    buildY = 0;
-                    buildType = 0;
                 }
-                break;
+                constMap[buildX][buildY] = powerStation[2];   // третья после ожидания, дальнего ожидания не требуется
             }
+            buildInProgress =false;
+            break;
         }
     }
 
     void build(int x, int y, int type) {
         System.out.println("начало метода build");
 
-        if (checkMap(x, y) == true && type != 0) {
-            new Thread(Constructions.this).start();
-            try {
-                Thread.sleep(300);
-            }catch (InterruptedException e){
-                e.printStackTrace();
-            }
+        if (checkMap(x, y) == true && type != 0 && buildInProgress == false) {
             buildX = x;
             buildY = y;
             buildType = type;
+            new Thread(Constructions.this).start();
+            buildInProgress = true;
+
         }
+        else System.out.println("sorry, but building in progress");
     }
 
     public boolean checkMap(int x, int y) {
