@@ -12,6 +12,9 @@ public class DesktopLauncher implements MyConstSettings {
 		config.fullscreen = false;
 		config.height = HEIGHT_WINDOW;
 		config.width = WIDTH_WINDOW;
+	}
+	@Override
+	public void run(){
 
 	}
 }

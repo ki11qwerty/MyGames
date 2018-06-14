@@ -40,4 +40,8 @@ public class Hero implements MyConstSettings {
             Xposition -= speed;
         }
     }
+    @Override
+    public void run(){
+
+    }
 }

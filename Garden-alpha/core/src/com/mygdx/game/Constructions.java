@@ -30,8 +30,8 @@ public class Constructions extends Thread {
     void render(SpriteBatch batch) {
         for (int i = 0; i < constMap.length; i++) {
             for (int j = 0; j < constMap[0].length; j++) {
-                batch.draw(constMap[i][j], i * constMap[i][j].getWidth(), j *
-                        constMap[i][j].getHeight());
+                batch.draw(constMap[i][j], i * constMap[i][j].getWidth() + Garden.screenXPosition, j *
+                        constMap[i][j].getHeight() + Garden.screenYPosition);                                          //--------------
             }
         }
     }
@@ -71,7 +71,8 @@ public class Constructions extends Thread {
             new Thread(Constructions.this).start();
             buildInProgress = true;                         //сделано чтобы не перебивались кординаты старых с новыми
 
-        } else System.out.println("sorry, but cordinates uncorrect");
+        } else System.out.println("sorry, but cordinates uncorrect \n" +
+                "x-"+x+",y-"+y+",type"+type);
     }
 
     public boolean checkMap(int x, int y) {

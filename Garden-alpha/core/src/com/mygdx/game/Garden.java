@@ -9,8 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.Random;
 
 public class Garden extends ApplicationAdapter implements MyConstSettings {
-    public static int screenXPosition =0;
-    public static int screenYPosition =0;
+    public static int screenXPosition;
+    public static int screenYPosition;
     SpriteBatch batch;
     MyMap map;
     Hero hero;
@@ -21,10 +21,13 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
 
     @Override
     public void create() {
+        screenXPosition =0;
+        screenYPosition=0;
         batch = new SpriteBatch();
         map = new MyMap(SIZE_X, SIZE_Y);
         hero = new Hero(10);
         constructions = new Constructions(SIZE_X, SIZE_Y);
+        new Thread(this).start();
     }
 
     @Override
@@ -62,15 +65,19 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
         }
         if (Gdx.input.justTouched()) {          //свап-блок для мышки
             if (constructNum == 0) {
-                System.out.println(" " + Gdx.input.getX() / 50 + ", " + (Gdx.graphics.getHeight() - Gdx.input.getY()) / 50);
-                map.swapTexture(Gdx.input.getX() / 50, (Gdx.graphics.getHeight() - Gdx.input.getY()) / 50,
+                System.out.println(" " + (Gdx.input.getX() - Garden.screenXPosition) / 50 + ", " +
+                        (Gdx.graphics.getHeight() - Gdx.input.getY() -Garden.screenYPosition) / 50);
+                map.swapTexture((Gdx.input.getX() - Garden.screenXPosition) / 50, (Gdx.graphics.getHeight() -
+                                Gdx.input.getY() - Garden.screenYPosition) / 50,
                         nextBlockSwaping);
             }
         }
         if (Gdx.input.justTouched()) {         //стройка для мышки
             if (constructNum != 0) {
-                System.out.println(" " + Gdx.input.getX() / 50 + ", " + (Gdx.graphics.getHeight() - Gdx.input.getY()) / 50);
-                constructions.build(Gdx.input.getX() / 50, (Gdx.graphics.getHeight() - Gdx.input.getY()) / 50,
+                System.out.println(" " + (Gdx.input.getX() - Garden.screenXPosition) / 50 + ", " +
+                        (Gdx.graphics.getHeight() - Gdx.input.getY() -Garden.screenYPosition) / 50);
+                constructions.build((Gdx.input.getX() - Garden.screenXPosition) / 50, (Gdx.graphics.getHeight() -
+                                Gdx.input.getY() -Garden.screenYPosition) / 50,
                         constructNum);
             }
         }
@@ -84,6 +91,25 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
                 constructions.build(hero.Xposition / 50, hero.Yposition / 50,
                         constructNum);
             }
+        }
+    }
+    @Override
+    public void run() {
+        while (true) {
+            if (Gdx.input.getX()  > WIDTH_WINDOW -100)
+                screenXPosition-=SCROLL_SPEED;
+            if (Gdx.input.getX()  < 100)
+                screenXPosition+=SCROLL_SPEED;
+            if (Gdx.graphics.getHeight()-Gdx.input.getY()  > HEIGHT_WINDOW - 100)
+                screenYPosition-=SCROLL_SPEED;
+            if (Gdx.graphics.getHeight()-Gdx.input.getY()  < 100)
+                screenYPosition+=SCROLL_SPEED;
+            try{
+            Thread.sleep(10);
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
+
         }
     }
 }

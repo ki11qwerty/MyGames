@@ -38,13 +38,14 @@ public class MyMap  {
     public void render(SpriteBatch batch) {                     //отрисовываем массив-карту
         for (int i = 0; i < myMapArr.length; i++) {
             for (int j = 0; j < myMapArr[0].length; j++) {
-                batch.draw(myMapArr[i][j], i * myMapArr[i][j].getWidth()
-                        , j * myMapArr[i][j].getHeight());
+                batch.draw(myMapArr[i][j], i * myMapArr[i][j].getWidth() + Garden.screenXPosition
+                        , j * myMapArr[i][j].getHeight() + Garden.screenYPosition);
             }
         }
     }
 
-    public void swapTexture(int i, int j, int nextBlockSwaping) {          //свапаем епт
+    public void swapTexture(int i, int j, int nextBlockSwaping) {  //свапаем епт
+        System.out.println("в свапе " +i+","+j+",свапинг - "+nextBlockSwaping);
         if (checkArray(i, j) == true) {
             switch (nextBlockSwaping) {
                 case (1): {
