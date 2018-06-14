@@ -13,13 +13,13 @@ public class Hero implements MyConstSettings {
     public Hero(int speed) {
         this.img = new Texture("Hero.png");
         this.speed = speed;
-        this.Xposition = (SIZE_X / 2);
-        this.Yposition = (SIZE_Y / 2);
+        this.Xposition = (760);
+        this.Yposition = (350); //было sizeY or Y * 2 /50
     }
 
     public void update() {
-        if (Xposition < 0)
-            Xposition = 0;
+        if (Xposition < 0){
+            Xposition = 0;}
         if (Xposition > WIDTH_WINDOW - img.getWidth())
             Xposition = WIDTH_WINDOW - img.getWidth();
         if (Yposition < 0)
