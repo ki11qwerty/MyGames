@@ -16,13 +16,13 @@ public class Constructions extends Thread {
     public Constructions(int sizeX, int sizeY) {
         nullPng = new Texture("null.png");
         constMap = new Texture[sizeX][sizeY];
-        powerStation = new Texture[3];
+        powerStation = new Texture[4];
         for (int i = 0; i < sizeX; i++) {               //заполнить массив прозрачными Png
             for (int j = 0; j < sizeY; j++) {
                 constMap[i][j] = nullPng;
             }
         }
-        for (int i = 0; i < 3; i++) {                   //заполнить массив 3 фазами отрисовки powerStation
+        for (int i = 0; i < 4; i++) {                   //заполнить массив 4 фазами отрисовки powerStation
             powerStation[i] = new Texture("powerStation" + i + ".png");
         }
     }
@@ -45,15 +45,15 @@ public class Constructions extends Thread {
         System.out.println("вошли в ран");
         switch (buildType) {
             case (1): { //powerStation
-                for (int i = 0; i < 2; i++) {
-                    constMap[buildX][buildY] = powerStation[i]; //две отрисовки с ожиданием
+                for (int i = 0; i < 3; i++) {
+                    constMap[buildX][buildY] = powerStation[i]; //три отрисовки с ожиданием
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(2500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-                constMap[buildX][buildY] = powerStation[2];   // третья после ожидания, дальнего ожидания не требуется
+                constMap[buildX][buildY] = powerStation[3];   // четвертая после ожидания, далее ожидания не требуется
             }
             buildInProgress =false;
             break;

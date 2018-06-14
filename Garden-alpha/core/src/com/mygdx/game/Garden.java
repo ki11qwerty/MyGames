@@ -14,7 +14,6 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
     Hero hero;
     Constructions constructions;
     Random rand = new Random();
-    Thread thread2 = new Thread("thread2");
     int nextBlockSwaping = 0;
     int constructNum = 0;
 
