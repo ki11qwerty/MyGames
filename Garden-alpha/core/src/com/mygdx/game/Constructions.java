@@ -8,9 +8,9 @@ public class Constructions extends Thread {
     Texture[] powerStation;
     Texture LomberJack;
     Texture[][] constMap;
-    volatile int buildX = 0;
-    volatile int buildY = 0;
-    volatile int buildType = 0;
+    int buildX = 0;
+    int buildY = 0;
+    int buildType = 0;
     boolean buildInProgress = false;
 
     public Constructions(int sizeX, int sizeY) {
@@ -45,17 +45,18 @@ public class Constructions extends Thread {
         System.out.println("вошли в ран");
         switch (buildType) {
             case (1): { //powerStation
-                for (int i = 0; i < 3; i++) {
-                    constMap[buildX][buildY] = powerStation[i]; //три отрисовки с ожиданием
+                for (int i = 0, x = buildX, y = buildY; i < 4; i++) {
+                    if (i == 0)
+                        buildInProgress = false;      //далее может принимать еще кординаты новых построек
+                    constMap[x][y] = powerStation[i]; //отрисовки постройки с ожиданием
+
                     try {
                         Thread.sleep(2500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-                constMap[buildX][buildY] = powerStation[3];   // четвертая после ожидания, далее ожидания не требуется
             }
-            buildInProgress =false;
             break;
         }
     }
@@ -68,16 +69,18 @@ public class Constructions extends Thread {
             buildY = y;
             buildType = type;
             new Thread(Constructions.this).start();
-            buildInProgress = true;
+            buildInProgress = true;                         //сделано чтобы не перебивались кординаты старых с новыми
 
-        }
-        else System.out.println("sorry, but building in progress");
+        } else System.out.println("sorry, but cordinates uncorrect");
     }
 
     public boolean checkMap(int x, int y) {
-        if (x > constMap.length - 1 || y > constMap[0].length - 1 || x < 0 || y < 0)
+        if (x > constMap.length - 1 || y > constMap[0].length - 1 || x < 0 || y < 0)   //кординаты не существуют
             return false;
-        else
+
+        else if (constMap[x][y].equals(nullPng))                       // нет ли постороек
             return true;
+        else
+            return false;
     }
 }

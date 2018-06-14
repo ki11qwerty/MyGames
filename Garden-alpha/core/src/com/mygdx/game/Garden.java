@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.Random;
 
 public class Garden extends ApplicationAdapter implements MyConstSettings {
+    public static int screenXPosition =0;
+    public static int screenYPosition =0;
     SpriteBatch batch;
     MyMap map;
     Hero hero;
