@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Constructions extends Thread {
     Texture nullPng;
     Texture[] powerStation;
-    Texture LomberJack;
+    Texture[][] lumberjack;
     Texture[][] constMap;
     int buildX = 0;
     int buildY = 0;
@@ -16,6 +16,7 @@ public class Constructions extends Thread {
     public Constructions(int sizeX, int sizeY) {
         nullPng = new Texture("null.png");
         constMap = new Texture[sizeX][sizeY];
+       // lumberjack = new Texture[2][48];
         powerStation = new Texture[4];
         for (int i = 0; i < sizeX; i++) {               //заполнить массив прозрачными Png
             for (int j = 0; j < sizeY; j++) {
@@ -58,9 +59,9 @@ public class Constructions extends Thread {
                 }
             }
             break;
+//            case (2): { \\/        }
         }
     }
-
     void build(int x, int y, int type) {
         System.out.println("начало метода build");
 
