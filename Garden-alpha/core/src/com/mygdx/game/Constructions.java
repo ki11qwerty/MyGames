@@ -16,7 +16,7 @@ public class Constructions extends Thread {
     public Constructions(int sizeX, int sizeY) {
         nullPng = new Texture("null.png");
         constMap = new Texture[sizeX][sizeY];
-       // lumberjack = new Texture[2][48];
+        lumberjack = new Texture[2][48];
         powerStation = new Texture[4];
         for (int i = 0; i < sizeX; i++) {               //заполнить массив прозрачными Png
             for (int j = 0; j < sizeY; j++) {
@@ -59,7 +59,23 @@ public class Constructions extends Thread {
                 }
             }
             break;
-//            case (2): { \\/        }
+            case (2): { //lumberJack
+                for (int i = 0, x = buildX, y = buildY; i < 4; i++) {
+                    if (i == 0)
+                        buildInProgress = false;
+                    for (int j = 0; j < 2; j++) {
+                        for (int z = 0; z < 4; z++) {
+                            constMap[x + z][y + j] = powerStation[i];
+                        }
+                    }
+                    try {
+                        Thread.sleep(2500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            break;
         }
     }
     void build(int x, int y, int type) {

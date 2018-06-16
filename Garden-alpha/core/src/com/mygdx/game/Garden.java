@@ -63,6 +63,10 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
             System.out.println("5");
             constructNum = 0;
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_6)) {
+            System.out.println("6 - lumberjack");
+            constructNum = 2;
+        }
         /*-------------------------------------------------------------------------------------------------------------
         *далее следует адовая дичь. из за разных точек отчета Y у Gdx.input.getY(), считывает не с левого нижнего угла
         * а с левого верхнего, поэтому из высоты экрана отнимаем getY(). далее статическая переменная
