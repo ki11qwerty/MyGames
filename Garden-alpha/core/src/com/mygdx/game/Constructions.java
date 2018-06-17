@@ -32,7 +32,7 @@ public class Constructions extends Thread {
         for (int i = 0; i < constMap.length; i++) {
             for (int j = 0; j < constMap[0].length; j++) {
                 batch.draw(constMap[i][j], i * constMap[i][j].getWidth() + Garden.screenXPosition, j *
-                        constMap[i][j].getHeight() + Garden.screenYPosition);                                          //--------------
+                        constMap[i][j].getHeight() + Garden.screenYPosition);
             }
         }
     }
@@ -78,10 +78,11 @@ public class Constructions extends Thread {
             break;
         }
     }
+
     void build(int x, int y, int type) {
         System.out.println("начало метода build");
 
-        if (checkMap(x, y) == true && type != 0 && buildInProgress == false) {
+        if (checkMap(x, y, type) == true && type != 0 && buildInProgress == false) {
             buildX = x;
             buildY = y;
             buildType = type;
@@ -89,16 +90,33 @@ public class Constructions extends Thread {
             buildInProgress = true;                         //сделано чтобы не перебивались кординаты старых с новыми
 
         } else System.out.println("sorry, but cordinates uncorrect \n" +
-                "x-"+x+",y-"+y+",type"+type);
+                "x-" + x + ",y-" + y + ",type" + type);
     }
 
-    public boolean checkMap(int x, int y) {
-        if (x > constMap.length - 1 || y > constMap[0].length - 1 || x < 0 || y < 0)   //кординаты не существуют
-            return false;
+    public boolean checkMap(int x, int y, int type) {
+        if (type == 1) {
+            if (x > constMap.length - 1 || y > constMap[0].length - 1 || x < 0 || y < 0)   //кординаты не существуют
+                return false;
 
-        else if (constMap[x][y].equals(nullPng))                       // нет ли постороек
-            return true;
-        else
-            return false;
-    }
-}
+            else if (constMap[x][y].equals(nullPng))                       // нет ли построек
+                return true;
+            else
+                return false;
+        }
+        if (type == 2) {
+            if (x > constMap.length - 1 || y > constMap[0].length - 1 || x < 0 || y < 0)   //кординаты не существуют
+                return false;
+            else if (constMap[x][y].equals(nullPng)) {       //можно сделать как то по красивее но пока пох
+                for (int i = 0; i < 2; i++) {
+                    for (int j = 0; j < 4; j++) {
+                        if (!constMap[x + j][y + i].equals(nullPng))
+                            return false;
+                    }
+                }
+                    return true;
+                }
+            } else
+                return false;
+        return false;     }
+
+   }
