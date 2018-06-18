@@ -94,7 +94,7 @@ public class Constructions extends Thread {
     }
 
     public boolean checkMap(int x, int y, int type) {
-        if (type == 1) {
+        if (type == 1) {                         // надо переделать все под switch при следующей оптимизации кода =) !!!
             if (x > constMap.length - 1 || y > constMap[0].length - 1 || x < 0 || y < 0)   //кординаты не существуют
                 return false;
 
