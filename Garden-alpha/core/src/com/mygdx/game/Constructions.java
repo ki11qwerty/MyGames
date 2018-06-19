@@ -16,7 +16,7 @@ public class Constructions extends Thread {
     public Constructions(int sizeX, int sizeY) {
         nullPng = new Texture("null.png");
         constMap = new Texture[sizeX][sizeY];
-        lumberjack = new Texture[2][48];
+        lumberjack = new Texture[2][48];                //свободного времени не было сегодня
         powerStation = new Texture[4];
         for (int i = 0; i < sizeX; i++) {               //заполнить массив прозрачными Png
             for (int j = 0; j < sizeY; j++) {
