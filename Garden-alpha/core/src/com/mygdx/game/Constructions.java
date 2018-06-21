@@ -8,6 +8,7 @@ public class Constructions extends Thread {
     Texture[] powerStation;
     Texture[][][] lumberjack;
     Texture[][] constMap;
+    int constructingTime = 2500;
     int buildX = 0;
     int buildY = 0;
     int buildType = 0;
@@ -52,21 +53,21 @@ public class Constructions extends Thread {
     public void run() {                                       //костыль продашн сука
         System.out.println("вошли в ран");
         switch (buildType) {
-            case (1): { //powerStation
+            case (1): {                                               //powerStation
                 for (int i = 0, x = buildX, y = buildY; i < 4; i++) {
                     if (i == 0)
                         buildInProgress = false;      //далее может принимать еще кординаты новых построек
                     constMap[x][y] = powerStation[i]; //отрисовки постройки с ожиданием
 
                     try {
-                        Thread.sleep(2500);
+                        Thread.sleep(constructingTime);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
             }
             break;
-            case (2): { //lumberJack
+            case (2): {                                                 //lumberJack
                 for (int z = 0, x = buildX, y = buildY; z < 4; z++) {
                     if (z == 0)
                         buildInProgress = false;
@@ -76,7 +77,7 @@ public class Constructions extends Thread {
                         }
                     }
                     try {
-                        Thread.sleep(2500);
+                        Thread.sleep((int)(constructingTime * 1.5f));
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
