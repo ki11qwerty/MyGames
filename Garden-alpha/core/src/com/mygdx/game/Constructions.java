@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Constructions extends Thread {
     Texture nullPng;
     Texture[] powerStation;
-    Texture[][] lumberjack;
+    Texture[][][] lumberjack;
     Texture[][] constMap;
     int buildX = 0;
     int buildY = 0;
@@ -16,7 +16,7 @@ public class Constructions extends Thread {
     public Constructions(int sizeX, int sizeY) {
         nullPng = new Texture("null.png");
         constMap = new Texture[sizeX][sizeY];
-        lumberjack = new Texture[2][48];                //свободного времени не было сегодня
+        lumberjack = new Texture[4][4][2];              // [количествоСтадий][x][y]
         powerStation = new Texture[4];
         for (int i = 0; i < sizeX; i++) {               //заполнить массив прозрачными Png
             for (int j = 0; j < sizeY; j++) {
@@ -25,6 +25,13 @@ public class Constructions extends Thread {
         }
         for (int i = 0; i < 4; i++) {                   //заполнить массив 4 фазами отрисовки powerStation
             powerStation[i] = new Texture("powerStation" + i + ".png");
+        }
+        for(int z = 0; z < lumberjack.length; z++){      //заполнить массив 4 фазами отрисовки lumberjack
+            for (int x = 0; x < lumberjack[0].length; x++){
+                for (int y = 0; y < lumberjack[0][0].length; y++){
+                    lumberjack[z][x][y] = new Texture("lumberjack/lumberjack"+z+""+x+""+y+".png");
+                }
+            }
         }
     }
 
@@ -60,12 +67,12 @@ public class Constructions extends Thread {
             }
             break;
             case (2): { //lumberJack
-                for (int i = 0, x = buildX, y = buildY; i < 4; i++) {
-                    if (i == 0)
+                for (int z = 0, x = buildX, y = buildY; z < 4; z++) {
+                    if (z == 0)
                         buildInProgress = false;
-                    for (int j = 0; j < 2; j++) {
-                        for (int z = 0; z < 4; z++) {
-                            constMap[x + z][y + j] = powerStation[i];
+                    for (int i = 0; i < 2; i++) {
+                        for (int j = 0; j < 4; j++) {
+                            constMap[x + j][y + i] = lumberjack[z][j][i];
                         }
                     }
                     try {
