@@ -1,7 +1,7 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.Texture;                          //задание на ближайшие рабочие дни сделать
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;                  //строения обьектами
 
 public class Constructions extends Thread {
     Texture nullPng;
