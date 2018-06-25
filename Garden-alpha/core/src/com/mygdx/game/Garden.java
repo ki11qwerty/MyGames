@@ -14,7 +14,7 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
     SpriteBatch batch;
     MyMap map;
     Hero hero;
-    Constructions constructions;
+    Building building;
     Random rand = new Random();
     int nextBlockSwaping = 0;
     int constructNum = 0;
@@ -26,7 +26,7 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
         batch = new SpriteBatch();
         map = new MyMap(SIZE_X, SIZE_Y);
         hero = new Hero(10);
-        constructions = new Constructions(SIZE_X, SIZE_Y);
+        building = new Building(SIZE_X, SIZE_Y);
         new Thread(this).start();
     }
 
@@ -37,7 +37,7 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         map.render(batch);           //отрисовка массив-карты
-        constructions.render(batch); // отрисовка строений
+        building.render(batch); // отрисовка строений
         batch.draw(hero.img, hero.Xposition, hero.Yposition);  //отрисовка героя на карте
 
         batch.end();
@@ -87,7 +87,7 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
             if (constructNum != 0) {
                 System.out.println(" " + (Gdx.input.getX() - Garden.screenXPosition) / 50 + ", " +
                         (Gdx.graphics.getHeight() - Gdx.input.getY() - Garden.screenYPosition) / 50);
-                constructions.build((Gdx.input.getX() - Garden.screenXPosition) / 50, (Gdx.graphics.getHeight() -
+                building.build((Gdx.input.getX() - Garden.screenXPosition) / 50, (Gdx.graphics.getHeight() -
                                 Gdx.input.getY() - Garden.screenYPosition) / 50,
                         constructNum);
             }
@@ -100,7 +100,7 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {     //стройка для позиции героя
             if (constructNum != 0) {
-                constructions.build((hero.Xposition -Garden.screenXPosition) / 50, (hero.Yposition -
+                building.build((hero.Xposition -Garden.screenXPosition) / 50, (hero.Yposition -
                                 Garden.screenYPosition)/ 50,
                         constructNum);
             }

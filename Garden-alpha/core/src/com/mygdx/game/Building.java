@@ -2,20 +2,22 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;                          //задание на ближайшие рабочие дни сделать
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;                  //строения обьектами
-                                                                   //   комит ради комита =)
 
-public class Constructions extends Thread {
+public class Building extends Thread {
     Texture nullPng;
     Texture[] powerStation;
     Texture[][][] lumberjack;
     Texture[][] constMap;
+   Construction[] constract; //---------------
     int constructingTime = 2500;
     int buildX = 0;
     int buildY = 0;
     int buildType = 0;
     boolean buildInProgress = false;
 
-    public Constructions(int sizeX, int sizeY) {
+    public Building(int sizeX, int sizeY) {
+        constract = new Construction[100];    //--------------------
+        constract[0] = new PowerStation(powerStation,0,0);
         nullPng = new Texture("null.png");
         constMap = new Texture[sizeX][sizeY];
         lumberjack = new Texture[4][4][2];              // [количествоСтадий][x][y]
@@ -43,6 +45,10 @@ public class Constructions extends Thread {
                 batch.draw(constMap[i][j], i * constMap[i][j].getWidth() + Garden.screenXPosition, j *
                         constMap[i][j].getHeight() + Garden.screenYPosition);
             }
+        }
+        for (int i = 0; i < constract.length; i++){       //новый массив построек версия 2.0             //------------
+            if(constract[i] != null)
+            batch.draw(constract[i].getImg(), constract[i].getXposition(),constract[i].getYposition());
         }
     }
 
@@ -95,7 +101,7 @@ public class Constructions extends Thread {
             buildX = x;
             buildY = y;
             buildType = type;
-            new Thread(Constructions.this).start();
+            new Thread(Building.this).start();
             buildInProgress = true;                         //сделано чтобы не перебивались кординаты старых с новыми
 
         } else System.out.println("sorry, but cordinates uncorrect \n" +
