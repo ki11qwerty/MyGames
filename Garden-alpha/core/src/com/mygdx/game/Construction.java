@@ -1,13 +1,13 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 
 public class Construction {
     int cost;
     Texture[] imgArray;
-    Texture img;
-    int Xposition;
-    int Yposition;
+    Texture img = new Texture("powerStation3.png");
+    Vector2 position;
 
     public Construction() {
     }
@@ -16,7 +16,7 @@ public class Construction {
         return img;
     }
 
-    public void setImg(int i) {
+    public void setImg(int i) {         // для отдельного потока постройки, который будет дергать метод в итерации
         if (i <= imgArray.length)
             img = imgArray[i];
         else
@@ -26,14 +26,11 @@ public class Construction {
     public int getCost() {
         return cost;
     }
-    public int getXposition(){
-        return Xposition;
+    public Vector2 getPosition(){
+        return position;
     }
-    public int getYposition(){
-        return Yposition;
-    }
-    public void setPositions(int x ,int y){
-        Xposition = x;
-        Yposition = y;
+
+    public void setPositions(Vector2 position){
+        this.position = position;
     }
 }

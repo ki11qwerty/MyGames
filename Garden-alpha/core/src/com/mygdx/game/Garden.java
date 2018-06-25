@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.Random;
 
@@ -16,8 +17,9 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
     Hero hero;
     Building building;
     Random rand = new Random();
-    int nextBlockSwaping = 0;
-    int constructNum = 0;
+//    int nextBlockSwaping = 0;
+//    int constructNum = 0;
+    int constructType = 0;
 
     @Override
     public void create() {
@@ -45,27 +47,27 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
 
     public void update() {
         hero.update();
-        if (Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {
-            nextBlockSwaping = 1;
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {
+//            nextBlockSwaping = 1;
+//        }
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_2)) {
+//            nextBlockSwaping = 2;
+//        }
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_3)) {
+//            System.out.println("3");
+//            nextBlockSwaping = 3;
+//        }
+        if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_1)) {
+            System.out.println("1 - powerStation");
+            constructType= 1;
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_2)) {
-            nextBlockSwaping = 2;
+        if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_2)) {
+            System.out.println("2 - LumberJack");
+            constructType = 2;
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_3)) {
-            System.out.println("3");
-            nextBlockSwaping = 3;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_4)) {
-            System.out.println("4");
-            constructNum = 1;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_5)) {
-            System.out.println("5");
-            constructNum = 0;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_6)) {
-            System.out.println("6 - lumberjack");
-            constructNum = 2;
+        if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_3)) {
+            System.out.println("3 - я хуй знает нахуй ты это нажал");
+            constructType = 3;
         }
         /*-------------------------------------------------------------------------------------------------------------
         *далее следует адовая дичь. из за разных точек отчета Y у Gdx.input.getY(), считывает не с левого нижнего угла
@@ -74,39 +76,51 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
          * там точно без ста грамм не обойтись короче...
         * ------------------------------------------------------------------------------------------------------------
          */
-        if (Gdx.input.justTouched()) {          //свап-блок для мышки
-            if (constructNum == 0) {
+//        if (Gdx.input.justTouched()) {          //свап-блок для мышки
+//            if (constructNum == 0) {
+//                System.out.println(" " + (Gdx.input.getX() - Garden.screenXPosition) / 50 + ", " +
+//                        (Gdx.graphics.getHeight() - Gdx.input.getY() - Garden.screenYPosition) / 50);
+//                map.swapTexture((Gdx.input.getX() - Garden.screenXPosition) / 50, (Gdx.graphics.getHeight() -
+//                                Gdx.input.getY() - Garden.screenYPosition) / 50,
+//                        nextBlockSwaping);
+//            }
+//        }
+//        if (Gdx.input.justTouched()) {         //стройка для мышки
+//            if (constructType != 0) {
+//                System.out.println(" " + (Gdx.input.getX() - Garden.screenXPosition) / 50 + ", " +
+//                        (Gdx.graphics.getHeight() - Gdx.input.getY() - Garden.screenYPosition) / 50);
+//                building.build((Gdx.input.getX() - Garden.screenXPosition) / 50, (Gdx.graphics.getHeight() -
+//                                Gdx.input.getY() - Garden.screenYPosition) / 50,
+//                        constructType);
+//            }
+//        }
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {     //свап-блок для позиции героя
+//            if (constructNum == 0) {
+//                map.swapTexture((hero.Xposition -Garden.screenXPosition) / 50, (hero.Yposition -
+//                        Garden.screenYPosition) / 50, nextBlockSwaping);
+//            }
+//        }
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {     //стройка для позиции героя
+//            if (constructType != 0) {
+//                building.build((hero.Xposition -Garden.screenXPosition) / 50, (hero.Yposition -
+//                                Garden.screenYPosition)/ 50,
+//                        constructType);
+//            }
+//        }
+        if (Gdx.input.justTouched()) {
+            if (constructType != 0) {
                 System.out.println(" " + (Gdx.input.getX() - Garden.screenXPosition) / 50 + ", " +
                         (Gdx.graphics.getHeight() - Gdx.input.getY() - Garden.screenYPosition) / 50);
-                map.swapTexture((Gdx.input.getX() - Garden.screenXPosition) / 50, (Gdx.graphics.getHeight() -
-                                Gdx.input.getY() - Garden.screenYPosition) / 50,
-                        nextBlockSwaping);
-            }
-        }
-        if (Gdx.input.justTouched()) {         //стройка для мышки
-            if (constructNum != 0) {
-                System.out.println(" " + (Gdx.input.getX() - Garden.screenXPosition) / 50 + ", " +
-                        (Gdx.graphics.getHeight() - Gdx.input.getY() - Garden.screenYPosition) / 50);
-                building.build((Gdx.input.getX() - Garden.screenXPosition) / 50, (Gdx.graphics.getHeight() -
-                                Gdx.input.getY() - Garden.screenYPosition) / 50,
-                        constructNum);
-            }
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {     //свап-блок для позиции героя
-            if (constructNum == 0) {
-                map.swapTexture((hero.Xposition -Garden.screenXPosition) / 50, (hero.Yposition -
-                        Garden.screenYPosition) / 50, nextBlockSwaping);
-            }
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {     //стройка для позиции героя
-            if (constructNum != 0) {
-                building.build((hero.Xposition -Garden.screenXPosition) / 50, (hero.Yposition -
-                                Garden.screenYPosition)/ 50,
-                        constructNum);
+                building.build(getVector2Click(Gdx.input.getX() - Garden.screenXPosition,
+                        Gdx.graphics.getHeight() - Gdx.input.getY() -
+                        Garden.screenYPosition), constructType);
             }
         }
     }
 
+    public Vector2 getVector2Click(int x, int y){
+        return new Vector2(x,y);
+    }
     @Override
     public void run() {            //отслеживание мышки и игрока, двигаем экран
         while (true) {

@@ -1,15 +1,14 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 
 public class PowerStation extends Construction {
-    Texture[] imgArray;
-    Texture img;
-    public PowerStation(Texture[] imgArray, int x, int y) {
+    public PowerStation(Texture[] imgArray, Vector2 position) {
         this.cost = 100;
         this.imgArray = imgArray;
-        Xposition = x;
-        Yposition = y;
+        this.position = position;
+
 
     }
 
