@@ -153,7 +153,7 @@ public class Building extends Thread {
                     return;
                 }
             }
-    }
+    }                 //нужны хитбоксы
     @Override
     public void run() {
         createConstruct(buildPosition, buildType, buildInArray);
