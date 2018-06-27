@@ -6,19 +6,18 @@ import com.badlogic.gdx.math.Vector2;
 public class Construction {
     int cost;
     Texture[] imgArray;
-    Texture img = new Texture("powerStation3.png");
+    Texture img;
     Vector2 position;
-
     public Construction() {
     }
 
     public Texture getImg() {
-        return img;
+        return this.img;
     }
 
     public void setImg(int i) {         // для отдельного потока постройки, который будет дергать метод в итерации
-        if (i <= imgArray.length)
-            img = imgArray[i];
+        if (i <= this.imgArray.length)
+            this.img = this.imgArray[i];
         else
             return;
     }

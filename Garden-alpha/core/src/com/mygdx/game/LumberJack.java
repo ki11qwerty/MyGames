@@ -3,9 +3,9 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
-public class PowerStation extends Construction {
-    public PowerStation(Texture[] imgArray, Vector2 position) {
-        this.cost = 100;
+public class LumberJack extends Construction {
+    public LumberJack(Texture[] imgArray, Vector2 position) {
+        this.cost = 500;
         this.imgArray = new Texture[4];
         this.imgArray = imgArray;
         this.img = imgArray[0];

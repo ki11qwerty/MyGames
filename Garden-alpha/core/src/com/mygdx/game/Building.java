@@ -1,27 +1,26 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;                          //задание на ближайшие рабочие дни сделать
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;                  //строения обьектами
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;                  //строения обьектами - выполнено епт
 import com.badlogic.gdx.math.Vector2;
 
 public class Building extends Thread {
     Texture nullPng;
     Texture[] powerStation;
-    Texture[][][] lumberjack;
+    Texture[] lumberjack;
     Texture[][] constMap;
     Construction[] constract; //---------------
     int constructingTime = 2500;
     Vector2 buildPosition;
     int buildType = 0;
     boolean buildInProgress = false;
-    int buildInArray;
+    int buildIndexInArray;
 
     public Building(int sizeX, int sizeY) {
         constract = new Construction[100];    //--------------------
-        constract[0] = new PowerStation(powerStation, new Vector2(100, 100));
         nullPng = new Texture("null.png");
         constMap = new Texture[sizeX][sizeY];
-        lumberjack = new Texture[4][4][2];              // [количествоСтадий][x][y]
+        lumberjack = new Texture[4];              // [количествоСтадий][x][y]
         powerStation = new Texture[4];
         for (int i = 0; i < sizeX; i++) {               //заполнить массив прозрачными Png
             for (int j = 0; j < sizeY; j++) {
@@ -29,14 +28,10 @@ public class Building extends Thread {
             }
         }
         for (int i = 0; i < 4; i++) {                   //заполнить массив 4 фазами отрисовки powerStation
-            powerStation[i] = new Texture("powerStation" + i + ".png");
+            powerStation[i] = new Texture("construction/powerStation" + i + ".png");
         }
-        for (int z = 0; z < lumberjack.length; z++) {      //заполнить массив 4 фазами отрисовки lumberjack
-            for (int x = 0; x < lumberjack[0].length; x++) {
-                for (int y = 0; y < lumberjack[0][0].length; y++) {
-                    lumberjack[z][x][y] = new Texture("lumberjack/lumberjack" + z + "" + x + "" + y + ".png");
-                }
-            }
+        for (int i = 0; i < 4; i++) {      //заполнить массив 4 фазами отрисовки lumberjack
+            lumberjack[i] = new Texture("construction/lumberjack" + i + ".png");
         }
     }
 
@@ -137,33 +132,57 @@ public class Building extends Thread {
 //        return false;     }
 //
 //   }
-    // все что ниже идет с проблемами, вот сиди Леша и решай!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    public void build(Vector2 position, int type) {
-        if (buildInProgress == false)                // все что написано далее, выполнялось профессионалами под пивасом
+    public void createBuildingThread(Vector2 position, int type) {//поиск места в массиве,
+        if (buildInProgress == false) {                           //инициализация переменных аргументами
+            System.out.println("проход в if - progress true");    //с запуском в разных потоках
+            buildInProgress = true;
             for (int i = 0; i < constract.length; i++) {
                 if (constract[i] == null) {
-                    switch (type) {
-                        case (1):
-                            buildPosition = position;
-                            buildType = type;
-                            buildInArray = i;
-                            new Thread(Building.this).start();
-                            break;
-                    }
+                    System.out.println("итерация массива -" + i);
+                    buildPosition = position;
+                    buildType = type;
+                    buildIndexInArray = i;
+                    new Thread(Building.this).start();
                     return;
                 }
             }
+        } else {
+            System.out.println("buildInProgres " + buildInProgress + ",return -> false");
+            buildInProgress = false;
+            return;
+        }
+
     }                 //нужны хитбоксы
+
     @Override
     public void run() {
-        createConstruct(buildPosition, buildType, buildInArray);
-        buildInProgress = true;
+        building(buildPosition, buildType, buildIndexInArray);
     }
-    public void createConstruct(Vector2 position, int type, int indexOfArray) {
-        switch (type){
-            case (1) :{
-                constract[buildInArray] = new PowerStation(powerStation, position);
-                buildInProgress = false;
+
+    public void building(Vector2 position, int type, int indexOfArray) {
+        switch (type) {
+            case (1): {
+                constract[indexOfArray] = new PowerStation(powerStation, position);
+                animationBuildingProgress(buildIndexInArray);
+            }
+            break;
+            case (2): {
+                constract[indexOfArray] = new LumberJack(lumberjack, position);
+                animationBuildingProgress(buildIndexInArray);
+            }
+            break;
+        }
+        buildInProgress = false;
+    }
+
+    public void animationBuildingProgress(int buildIndexInArray) {
+        buildInProgress = false;
+        for (int i = 0; i < 4; i++) {
+            try {
+                constract[buildIndexInArray].setImg(i);
+                Thread.sleep(constructingTime);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }

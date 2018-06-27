@@ -111,7 +111,7 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
             if (constructType != 0) {
                 System.out.println(" " + (Gdx.input.getX() - Garden.screenXPosition) / 50 + ", " +
                         (Gdx.graphics.getHeight() - Gdx.input.getY() - Garden.screenYPosition) / 50);
-                building.build(getVector2Click(Gdx.input.getX() - Garden.screenXPosition,
+                building.createBuildingThread(getVector2Click(Gdx.input.getX() - Garden.screenXPosition,
                         Gdx.graphics.getHeight() - Gdx.input.getY() -
                         Garden.screenYPosition), constructType);
             }
