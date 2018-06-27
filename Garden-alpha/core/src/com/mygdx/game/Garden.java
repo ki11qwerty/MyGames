@@ -1,3 +1,10 @@
+/*****************************************************
+*               version - 0.030    @unwork           *
+ *        created      by   Ki11qwerty               *
+ *        disigner     -    Killqwerty               *
+ *        codeWriter   -    Killqwerty               *
+ *        brainFucker  -    Killqwerty               *
+*****************************************************/
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
@@ -16,7 +23,7 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
     MyMap map;
     Hero hero;
     Building building;
-    Random rand = new Random();
+//    Random rand = new Random();
 //    int nextBlockSwaping = 0;
 //    int constructNum = 0;
     int constructType = 0;
@@ -41,7 +48,6 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
         map.render(batch);           //отрисовка массив-карты
         building.render(batch); // отрисовка строений
         batch.draw(hero.img, hero.Xposition, hero.Yposition);  //отрисовка героя на карте
-
         batch.end();
     }
 
@@ -68,6 +74,10 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
         if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_3)) {
             System.out.println("3 - я хуй знает нахуй ты это нажал");
             constructType = 3;
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_9)) {
+            System.out.println(Hero.HeroMoney);
         }
         /*-------------------------------------------------------------------------------------------------------------
         *далее следует адовая дичь. из за разных точек отчета Y у Gdx.input.getY(), считывает не с левого нижнего угла
@@ -109,8 +119,8 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
 //        }
         if (Gdx.input.justTouched()) {
             if (constructType != 0) {
-                System.out.println(" " + (Gdx.input.getX() - Garden.screenXPosition) / 50 + ", " +
-                        (Gdx.graphics.getHeight() - Gdx.input.getY() - Garden.screenYPosition) / 50);
+//                System.out.println(" " + (Gdx.input.getX() - Garden.screenXPosition) / 50 + ", " +
+//                        (Gdx.graphics.getHeight() - Gdx.input.getY() - Garden.screenYPosition) / 50);
                 building.createBuildingThread(getVector2Click(Gdx.input.getX() - Garden.screenXPosition,
                         Gdx.graphics.getHeight() - Gdx.input.getY() -
                         Garden.screenYPosition), constructType);
@@ -137,6 +147,7 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            Hero.HeroMoney += 1;
 
         }
     }

@@ -9,7 +9,7 @@ public class Building extends Thread {
     Texture[] powerStation;
     Texture[] lumberjack;
     Texture[][] constMap;
-    Construction[] constract; //---------------
+    Construction[] constract; //---------------                       потом перефигачить это все дело в список (!3)
     int constructingTime = 2500;
     Vector2 buildPosition;
     int buildType = 0;
@@ -17,10 +17,10 @@ public class Building extends Thread {
     int buildIndexInArray;
 
     public Building(int sizeX, int sizeY) {
-        constract = new Construction[100];    //--------------------
+        constract = new Construction[100];    //--------------------  потом перефигачить это все дело в список (!3)
         nullPng = new Texture("null.png");
         constMap = new Texture[sizeX][sizeY];
-        lumberjack = new Texture[4];              // [количествоСтадий][x][y]
+        lumberjack = new Texture[4];
         powerStation = new Texture[4];
         for (int i = 0; i < sizeX; i++) {               //заполнить массив прозрачными Png
             for (int j = 0; j < sizeY; j++) {
@@ -30,7 +30,7 @@ public class Building extends Thread {
         for (int i = 0; i < 4; i++) {                   //заполнить массив 4 фазами отрисовки powerStation
             powerStation[i] = new Texture("construction/powerStation" + i + ".png");
         }
-        for (int i = 0; i < 4; i++) {      //заполнить массив 4 фазами отрисовки lumberjack
+        for (int i = 0; i < 4; i++) {                   //заполнить массив 4 фазами отрисовки lumberjack
             lumberjack[i] = new Texture("construction/lumberjack" + i + ".png");
         }
     }
@@ -159,16 +159,34 @@ public class Building extends Thread {
         building(buildPosition, buildType, buildIndexInArray);
     }
 
-    public void building(Vector2 position, int type, int indexOfArray) {
-        switch (type) {
+    public void building(Vector2 position, int type, int indexOfArray) {         //надо вхуярить проверку места и денег
+        switch (type) {                                                          //отдельным методом
             case (1): {
+                System.out.println(Hero.HeroMoney);
                 constract[indexOfArray] = new PowerStation(powerStation, position);
-                animationBuildingProgress(buildIndexInArray);
+                if (constract[indexOfArray].getCost() <= Hero.HeroMoney &&
+                        checkAreaForBuilding(constract[indexOfArray].getPosition(),indexOfArray) == true) {
+                    Hero.HeroMoney -= constract[indexOfArray].getCost();
+                    animationBuildingProgress(buildIndexInArray);
+                } else {
+                    System.out.println("Sorry you cant buy this need -" + constract[indexOfArray].getCost() +
+                            "\n But you have only - " + Hero.HeroMoney);
+                    constract[indexOfArray] = null;
+                }
             }
             break;
             case (2): {
+                System.out.println(Hero.HeroMoney);
                 constract[indexOfArray] = new LumberJack(lumberjack, position);
-                animationBuildingProgress(buildIndexInArray);
+                if (constract[indexOfArray].getCost() <= Hero.HeroMoney &&
+                        checkAreaForBuilding(constract[indexOfArray].getPosition(), buildIndexInArray)) {
+                    Hero.HeroMoney -= constract[indexOfArray].getCost();
+                    animationBuildingProgress(buildIndexInArray);
+                } else {
+                    System.out.println("Sorry you cant buy this need -" + constract[indexOfArray].getCost() +
+                            "\n But you have only - " + Hero.HeroMoney);
+                    constract[indexOfArray] = null;
+                }
             }
             break;
         }
@@ -185,5 +203,20 @@ public class Building extends Thread {
                 e.printStackTrace();
             }
         }
+    }
+
+    public boolean checkAreaForBuilding(Vector2 position, int buildIndexInArray) {
+        for (int i = 0; i < constract.length; i++) {
+            if (i == buildIndexInArray)
+                continue;
+            if (constract[i] == null) {
+                System.out.println("" + i + " - итерация внутри проверочного метода");
+                continue;
+            }
+            System.out.println("for внутри проверочного метода");
+            if (constract[i].rectangle.contains(position.x ,position.y))
+                return false;
+        }
+        return true;
     }
 }

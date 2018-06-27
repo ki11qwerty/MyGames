@@ -9,12 +9,14 @@ public class Hero implements MyConstSettings {
     int speed;
     int Xposition;
     int Yposition;
+    static volatile int HeroMoney;
 
     public Hero(int speed) {
         this.img = new Texture("Hero.png");
         this.speed = speed;
         this.Xposition = (760);
         this.Yposition = (350); //было sizeY or Y * 2 /50
+        HeroMoney = 200000;
     }
 
     public void update() {

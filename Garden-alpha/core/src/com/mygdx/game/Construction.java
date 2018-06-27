@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Construction {
@@ -8,6 +9,7 @@ public class Construction {
     Texture[] imgArray;
     Texture img;
     Vector2 position;
+    Rectangle rectangle;
     public Construction() {
     }
 
@@ -23,7 +25,7 @@ public class Construction {
     }
 
     public int getCost() {
-        return cost;
+        return this.cost;
     }
     public Vector2 getPosition(){
         return position;

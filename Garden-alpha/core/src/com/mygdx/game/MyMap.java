@@ -44,25 +44,25 @@ public class MyMap  {
         }
     }
 
-    public void swapTexture(int i, int j, int nextBlockSwaping) {  //свапаем епт
-        System.out.println("в свапе " +i+","+j+",свапинг - "+nextBlockSwaping);
-        if (checkArray(i, j) == true) {
-            switch (nextBlockSwaping) {
-                case (1): {
-                    myMapArr[i][j] = myTexture1;
-                    break;
-                }
-                case (2): {
-                    myMapArr[i][j] = myTexture2;
-                    break;
-                }
-                case (3): {
-                    myMapArr[i][j] = myTexture3;
-                    break;
-                }
-            }
-        } else return;
-    }
+//    public void swapTexture(int i, int j, int nextBlockSwaping) {  //свапаем епт
+//        System.out.println("в свапе " +i+","+j+",свапинг - "+nextBlockSwaping);
+//        if (checkArray(i, j) == true) {
+//            switch (nextBlockSwaping) {
+//                case (1): {
+//                    myMapArr[i][j] = myTexture1;
+//                    break;
+//                }
+//                case (2): {
+//                    myMapArr[i][j] = myTexture2;
+//                    break;
+//                }
+//                case (3): {
+//                    myMapArr[i][j] = myTexture3;
+//                    break;
+//                }
+//            }
+//        } else return;
+//    }
 
     public boolean checkArray(int i, int j) {         //проверка краев массива, чтоб не тыкнуть за края
         if (i > myMapArr.length - 1 || j > myMapArr[0].length - 1 || i < 0 || j < 0)
