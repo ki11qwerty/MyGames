@@ -13,7 +13,7 @@ public class PowerStation extends Construction {
         this.position = new Vector2(position.x - (this.img.getWidth() / 2),
                 position.y - (this.img.getHeight()) / 2);
         this.rectangle = new Rectangle(this.position.x,
-                this.position.y, this.img.getWidth(), this.img.getHeight());
+                this.position.y, this.img.getWidth() +100, this.img.getHeight()+100);
     }
 
 
