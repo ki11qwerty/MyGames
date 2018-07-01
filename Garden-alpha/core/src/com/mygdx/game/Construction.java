@@ -37,4 +37,8 @@ public class Construction {
     public Rectangle getRectangle(){
         return this.rectangle;
     }
+    public void update(){
+        this.rectangle.setPosition(this.position.x + Garden.screenXPosition,
+                this.position.y + Garden.screenYPosition);
+    }
 }

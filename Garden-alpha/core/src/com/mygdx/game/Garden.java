@@ -1,12 +1,18 @@
 /*****************************************************
-*               version - 0.033    @unStable         *
+ *---------------------------------------------------*
+ *               version - 0.034    @Stable          *
  *        created      by   Ki11qwerty               *
  *        disigner     -    Killqwerty               *
  *        codeWriter   -    Killqwerty               *
  *        brainFucker  -    Killqwerty               *
+ *---------------------------------------------------*
+ *               latest upDate -                     *
  *                                                   *
- *    latest upDate -                                *
+ * 0.034 fix bugs with ghostConstruct &              *
+ * rectangle position on map (its fcn stable!)       *
+ *                                                   *
  * 0.033 add ghostConstruct (non stable)             *
+ *                                                   *
  * 0.032 fix bug with rectangles                     *
 *****************************************************/
 package com.mygdx.game;

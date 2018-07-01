@@ -44,7 +44,7 @@ public class Building extends Thread {
         ghostPreConstruction[0][1] = new Texture("construction/red1.png");
         ghostPreConstruction[1][0] = new Texture("construction/green2.png");
         ghostPreConstruction[1][1] = new Texture("construction/red2.png");
-        rect = new Rectangle();
+        rect = new Rectangle(-1000, -1000,0,0);
         typeOfGhost = nullPng;
     }
 
@@ -56,9 +56,12 @@ public class Building extends Thread {
             }
         }
         for (int i = 0; i < construct.length; i++) {       //новый массив построек версия 2.0             //------------
-            if (construct[i] != null)
+            if (construct[i] != null) {
                 batch.draw(construct[i].getImg(), construct[i].getPosition().x + Garden.screenXPosition,
                         construct[i].getPosition().y + Garden.screenYPosition);
+//                construct[i].getRectangle().setPosition(construct[i].getPosition().x + Garden.screenXPosition,
+//                        construct[i].getPosition().y + Garden.screenYPosition);  //------ version 0.034
+            }
         }
         if(buildType == 0){
             typeOfGhost = nullPng;
@@ -74,6 +77,10 @@ public class Building extends Thread {
     }
 
     void update() {
+        for (int i = 0; i < construct.length; i++) {
+            if (construct[i] != null)
+                construct[i].update();
+  }
         if(buildType == 1) {
             rect.set(Gdx.input.getX() - 25, Gdx.graphics.getHeight() - Gdx.input.getY() - 25, 50, 50);
             if(checkAreaForBuilding(rect) == true){
@@ -91,6 +98,9 @@ public class Building extends Thread {
             else {
                 typeOfGhost = ghostPreConstruction[1][1];
             }
+        }
+        if(buildType == 0){
+            rect.set(-1000,-1000,0,0);
         }
     }
     public void setBuildType(int type){
@@ -176,7 +186,7 @@ public class Building extends Thread {
 //        return false;     }
 //
 //   }
-    public void createBuildingThread(Vector2 position) {//поиск места в массиве,
+    public synchronized void createBuildingThread(Vector2 position) {//поиск места в массиве,
         if (buildInProgress == false) {                           //инициализация переменных аргументами
             System.out.println("проход в if - progress true");    //с запуском в разных потоках
             buildInProgress = true;
@@ -236,6 +246,7 @@ public class Building extends Thread {
 
     public void animationBuildingProgress(int buildIndexInArray) {
         buildInProgress = false;
+        buildType = 0;
         for (int i = 0; i < 4; i++) {
             try {
                 construct[buildIndexInArray].setImg(i);
@@ -247,10 +258,9 @@ public class Building extends Thread {
     }
 
 //
-public synchronized boolean  checkAreaForBuilding(Rectangle rect) {            //version 2.0
+public boolean checkAreaForBuilding(Rectangle rect) {            //version 2.0
     for (int i = 0; i < construct.length; i++) {
         if (construct[i] == null) {
-    //        System.out.println("" + i + " - итерация внутри проверочного метода");
             continue;
         }
        System.out.print("for внутри проверочного метода");
