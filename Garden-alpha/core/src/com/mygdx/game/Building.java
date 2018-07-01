@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;                          //задание на ближайшие рабочие дни сделать
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;                  //строения обьектами - выполнено епт
 import com.badlogic.gdx.math.Rectangle;
@@ -10,19 +11,24 @@ public class Building extends Thread {
     Texture[] powerStation;
     Texture[] lumberjack;
     Texture[][] constMap;
-    Construction[] constract; //---------------                       потом перефигачить это все дело в список (!3)
+    Construction[] construct; //---------------                       потом перефигачить это все дело в список (!3)
+    Texture[][] ghostPreConstruction;
     int constructingTime = 2500;
     Vector2 buildPosition;
     int buildType = 0;
     boolean buildInProgress = false;
     int buildIndexInArray;
+    Rectangle rect;
+    Texture typeOfGhost;
+
 
     public Building(int sizeX, int sizeY) {
-        constract = new Construction[100];    //--------------------  потом перефигачить это все дело в список (!3)
+        construct = new Construction[100];    //--------------------  потом перефигачить это все дело в список (!3)
         nullPng = new Texture("null.png");
         constMap = new Texture[sizeX][sizeY];
         lumberjack = new Texture[4];
         powerStation = new Texture[4];
+        ghostPreConstruction = new Texture[2][2];    // отрисовка призрака type1 type2
         for (int i = 0; i < sizeX; i++) {               //заполнить массив прозрачными Png
             for (int j = 0; j < sizeY; j++) {
                 constMap[i][j] = nullPng;
@@ -34,6 +40,12 @@ public class Building extends Thread {
         for (int i = 0; i < 4; i++) {                   //заполнить массив 4 фазами отрисовки lumberjack
             lumberjack[i] = new Texture("construction/lumberjack" + i + ".png");
         }
+        ghostPreConstruction[0][0] = new Texture("construction/green1.png");
+        ghostPreConstruction[0][1] = new Texture("construction/red1.png");
+        ghostPreConstruction[1][0] = new Texture("construction/green2.png");
+        ghostPreConstruction[1][1] = new Texture("construction/red2.png");
+        rect = new Rectangle();
+        typeOfGhost = nullPng;
     }
 
     void render(SpriteBatch batch) {
@@ -43,15 +55,46 @@ public class Building extends Thread {
                         constMap[i][j].getHeight() + Garden.screenYPosition);
             }
         }
-        for (int i = 0; i < constract.length; i++) {       //новый массив построек версия 2.0             //------------
-            if (constract[i] != null)
-                batch.draw(constract[i].getImg(), constract[i].getPosition().x + Garden.screenXPosition,
-                        constract[i].getPosition().y + Garden.screenYPosition);
+        for (int i = 0; i < construct.length; i++) {       //новый массив построек версия 2.0             //------------
+            if (construct[i] != null)
+                batch.draw(construct[i].getImg(), construct[i].getPosition().x + Garden.screenXPosition,
+                        construct[i].getPosition().y + Garden.screenYPosition);
+        }
+        if(buildType == 0){
+            typeOfGhost = nullPng;
+        }
+        if(buildType == 1){                                //отрисовка макета для постройки
+            batch.draw(typeOfGhost, Gdx.input.getX() - (ghostPreConstruction[0][0].getWidth() / 2 ),
+                    Gdx.graphics.getHeight() - Gdx.input.getY() -(ghostPreConstruction[0][0].getHeight() / 2));
+        }
+        if(buildType == 2){
+            batch.draw(typeOfGhost, Gdx.input.getX() - (ghostPreConstruction[1][0].getWidth() / 2 ),
+                    Gdx.graphics.getHeight() - Gdx.input.getY() -(ghostPreConstruction[1][0].getHeight() / 2));
         }
     }
 
     void update() {
-
+        if(buildType == 1) {
+            rect.set(Gdx.input.getX() - 25, Gdx.graphics.getHeight() - Gdx.input.getY() - 25, 50, 50);
+            if(checkAreaForBuilding(rect) == true){
+                typeOfGhost = ghostPreConstruction[0][0];
+            }
+            else {
+                typeOfGhost = ghostPreConstruction[0][1];
+            }
+        }
+        if(buildType == 2) {
+            rect.set(Gdx.input.getX() - 100, Gdx.graphics.getHeight() - Gdx.input.getY() - 50, 200, 100);
+            if(checkAreaForBuilding(rect) == true){
+                typeOfGhost = ghostPreConstruction[1][0];
+            }
+            else {
+                typeOfGhost = ghostPreConstruction[1][1];
+            }
+        }
+    }
+    public void setBuildType(int type){
+        buildType = type;
     }
 
     //    @Override
@@ -133,15 +176,14 @@ public class Building extends Thread {
 //        return false;     }
 //
 //   }
-    public void createBuildingThread(Vector2 position, int type) {//поиск места в массиве,
+    public void createBuildingThread(Vector2 position) {//поиск места в массиве,
         if (buildInProgress == false) {                           //инициализация переменных аргументами
             System.out.println("проход в if - progress true");    //с запуском в разных потоках
             buildInProgress = true;
-            for (int i = 0; i < constract.length; i++) {
-                if (constract[i] == null) {
+            for (int i = 0; i < construct.length; i++) {
+                if (construct[i] == null) {
                     System.out.println("итерация массива -" + i);
                     buildPosition = position;
-                    buildType = type;
                     buildIndexInArray = i;
                     new Thread(Building.this).start();
                     return;
@@ -153,7 +195,7 @@ public class Building extends Thread {
             return;
         }
 
-    }                 //нужны хитбоксы
+    }
 
     @Override
     public void run() {
@@ -164,29 +206,27 @@ public class Building extends Thread {
         switch (type) {                                                          //отдельным методом
             case (1): {
                 System.out.println(Hero.HeroMoney);
-                constract[indexOfArray] = new PowerStation(powerStation, position);
-                if (constract[indexOfArray].getCost() <= Hero.HeroMoney &&
-                        checkAreaForBuilding(constract[indexOfArray].getPosition(),indexOfArray) == true) {
-                    Hero.HeroMoney -= constract[indexOfArray].getCost();
+                if (Hero.HeroMoney >= 100 &&
+                        typeOfGhost.equals(ghostPreConstruction[0][0])) {
+                    Hero.HeroMoney -= 100;
+                    construct[indexOfArray] = new PowerStation(powerStation, position);
                     animationBuildingProgress(buildIndexInArray);
                 } else {
-                    System.out.println("Sorry you cant buy this need -" + constract[indexOfArray].getCost() +
+                    System.out.println("Sorry you cant buy this need - 100"+
                             "\n But you have only - " + Hero.HeroMoney);
-                    constract[indexOfArray] = null;
                 }
             }
             break;
             case (2): {
                 System.out.println(Hero.HeroMoney);
-                constract[indexOfArray] = new LumberJack(lumberjack, position);
-                if (constract[indexOfArray].getCost() <= Hero.HeroMoney &&
-                        checkAreaForBuilding(constract[indexOfArray].getPosition(), buildIndexInArray)) {
-                    Hero.HeroMoney -= constract[indexOfArray].getCost();
+                if (Hero.HeroMoney >= 1000 &&
+                        typeOfGhost.equals(ghostPreConstruction[1][0])) {
+                    Hero.HeroMoney -= 1000;
+                    construct[indexOfArray] = new LumberJack(lumberjack, position);
                     animationBuildingProgress(buildIndexInArray);
                 } else {
-                    System.out.println("Sorry you cant buy this need -" + constract[indexOfArray].getCost() +
+                    System.out.println("Sorry you cant buy this need - 1000" +
                             "\n But you have only - " + Hero.HeroMoney);
-                    constract[indexOfArray] = null;
                 }
             }
             break;
@@ -198,7 +238,7 @@ public class Building extends Thread {
         buildInProgress = false;
         for (int i = 0; i < 4; i++) {
             try {
-                constract[buildIndexInArray].setImg(i);
+                construct[buildIndexInArray].setImg(i);
                 Thread.sleep(constructingTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -206,19 +246,17 @@ public class Building extends Thread {
         }
     }
 
-    public boolean checkAreaForBuilding(Vector2 position, int buildIndexInArray) {
-        Rectangle rect = constract[buildIndexInArray].getRectangle();
-        for (int i = 0; i < constract.length; i++) {
-            if (i == buildIndexInArray)
-                continue;
-            if (constract[i] == null) {
-                System.out.println("" + i + " - итерация внутри проверочного метода");
-                continue;
-            }
-            System.out.println("for внутри проверочного метода");
-            if (constract[i].getRectangle().overlaps(rect))
-                return false;
+//
+public synchronized boolean  checkAreaForBuilding(Rectangle rect) {            //version 2.0
+    for (int i = 0; i < construct.length; i++) {
+        if (construct[i] == null) {
+    //        System.out.println("" + i + " - итерация внутри проверочного метода");
+            continue;
         }
-        return true;
+       System.out.print("for внутри проверочного метода");
+        if (construct[i].getRectangle().overlaps(rect) || buildType == 0)
+            return false;
     }
+    return true;
+}
 }

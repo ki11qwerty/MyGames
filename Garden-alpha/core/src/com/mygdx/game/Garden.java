@@ -1,11 +1,13 @@
 /*****************************************************
-*               version - 0.032    @work             *
+*               version - 0.033    @unStable         *
  *        created      by   Ki11qwerty               *
  *        disigner     -    Killqwerty               *
  *        codeWriter   -    Killqwerty               *
  *        brainFucker  -    Killqwerty               *
  *                                                   *
- *    latest upDate -  fix bug with rectangles       *
+ *    latest upDate -                                *
+ * 0.033 add ghostConstruct (non stable)             *
+ * 0.032 fix bug with rectangles                     *
 *****************************************************/
 package com.mygdx.game;
 
@@ -28,7 +30,7 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
 //    Random rand = new Random();
 //    int nextBlockSwaping = 0;
 //    int constructNum = 0;
-    int constructType = 0;
+    int constructType = 0;         //надо выпилить со следующий обновы
 
     @Override
     public void create() {
@@ -55,6 +57,7 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
 
     public void update() {
         hero.update();
+        building.update();
 //        if (Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {
 //            nextBlockSwaping = 1;
 //        }
@@ -67,15 +70,15 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
 //        }
         if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_1)) {
             System.out.println("1 - powerStation");
-            constructType= 1;
+            building.setBuildType(1);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_2)) {
             System.out.println("2 - LumberJack");
-            constructType = 2;
+            building.setBuildType(2);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_3)) {
-            System.out.println("3 - я хуй знает нахуй ты это нажал");
-            constructType = 3;
+            System.out.println("3 - обнуление setBuildType = 0");
+            building.setBuildType(0);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_9)) {
@@ -120,15 +123,14 @@ public class Garden extends ApplicationAdapter implements MyConstSettings {
 //            }
 //        }
         if (Gdx.input.justTouched()) {
-            if (constructType != 0) {
+           // if (constructType != 0) {
 //                System.out.println(" " + (Gdx.input.getX() - Garden.screenXPosition) / 50 + ", " +
 //                        (Gdx.graphics.getHeight() - Gdx.input.getY() - Garden.screenYPosition) / 50);
                 building.createBuildingThread(getVector2Click(Gdx.input.getX() - Garden.screenXPosition,
-                        Gdx.graphics.getHeight() - Gdx.input.getY() -
-                        Garden.screenYPosition), constructType);
+                        Gdx.graphics.getHeight() - Gdx.input.getY() - Garden.screenYPosition));
             }
         }
-    }
+   // }
 
     public Vector2 getVector2Click(int x, int y){
         return new Vector2(x,y);
