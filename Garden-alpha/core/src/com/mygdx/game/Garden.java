@@ -1,9 +1,11 @@
 /*****************************************************
-*               version - 0.030    @unwork           *
+*               version - 0.032    @work             *
  *        created      by   Ki11qwerty               *
  *        disigner     -    Killqwerty               *
  *        codeWriter   -    Killqwerty               *
  *        brainFucker  -    Killqwerty               *
+ *                                                   *
+ *    latest upDate -  fix bug with rectangles       *
 *****************************************************/
 package com.mygdx.game;
 

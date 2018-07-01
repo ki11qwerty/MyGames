@@ -28,10 +28,13 @@ public class Construction {
         return this.cost;
     }
     public Vector2 getPosition(){
-        return position;
+        return this.position;
     }
 
     public void setPositions(Vector2 position){
         this.position = position;
+    }
+    public Rectangle getRectangle(){
+        return this.rectangle;
     }
 }

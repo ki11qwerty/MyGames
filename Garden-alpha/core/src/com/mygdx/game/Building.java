@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;                          //задание на ближайшие рабочие дни сделать
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;                  //строения обьектами - выполнено епт
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Building extends Thread {
@@ -206,6 +207,7 @@ public class Building extends Thread {
     }
 
     public boolean checkAreaForBuilding(Vector2 position, int buildIndexInArray) {
+        Rectangle rect = constract[buildIndexInArray].getRectangle();
         for (int i = 0; i < constract.length; i++) {
             if (i == buildIndexInArray)
                 continue;
@@ -214,7 +216,7 @@ public class Building extends Thread {
                 continue;
             }
             System.out.println("for внутри проверочного метода");
-            if (constract[i].rectangle.contains(position.x ,position.y))
+            if (constract[i].getRectangle().overlaps(rect))
                 return false;
         }
         return true;
