@@ -1,6 +1,6 @@
 /*****************************************************
  *---------------------------------------------------*
- *               version - 0.034    @Stable          *
+ *               version - 0.035    @Stable          *
  *        created      by   Ki11qwerty               *
  *        disigner     -    Killqwerty               *
  *        codeWriter   -    Killqwerty               *
@@ -8,6 +8,8 @@
  *---------------------------------------------------*
  *               latest upDate -                     *
  *                                                   *
+ * 0.035 start creating resourses... test forest     *
+ * textures                                          *
  * 0.034 fix bugs with ghostConstruct &              *
  * rectangle position on map (its fcn stable!)       *
  *                                                   *

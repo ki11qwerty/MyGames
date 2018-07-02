@@ -15,6 +15,5 @@ public class DesktopLauncher implements MyConstSettings {
 	}
 	@Override
 	public void run(){
-
 	}
 }

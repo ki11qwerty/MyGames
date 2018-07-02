@@ -13,6 +13,8 @@ public class Building extends Thread {
     Texture[][] constMap;
     Construction[] construct; //---------------                       потом перефигачить это все дело в список (!3)
     Texture[][] ghostPreConstruction;
+    Resourse[] resourse;
+    Texture[] forest;
     int constructingTime = 2500;
     Vector2 buildPosition;
     int buildType = 0;
@@ -46,6 +48,18 @@ public class Building extends Thread {
         ghostPreConstruction[1][1] = new Texture("construction/red2.png");
         rect = new Rectangle(-1000, -1000,0,0);
         typeOfGhost = nullPng;
+        resourse = new Resourse[10];
+        forest = new Texture[2];
+        forest[0] = new Texture("resourse/forest100x100.png");
+        forest[1] = new Texture("resourse/forest150x150.png");
+        resourse[0] = new Forest(forest[1], forest[1].getWidth(),forest[1].getHeight(),       //3и проверочных, зафигачить потом метод по оозданию
+                1000, new Vector2(500,500));
+        resourse[1] = new Forest(forest[1], forest[1].getWidth(),forest[1].getHeight(),
+                1000, new Vector2(630,500));
+        resourse[2] = new Forest(forest[0], forest[0].getWidth(),forest[0].getHeight(),
+                1000, new Vector2(300,800));
+        resourse[3] = new Forest(forest[1], forest[1].getWidth(),forest[1].getHeight(),
+                1000, new Vector2(760,500));
     }
 
     void render(SpriteBatch batch) {
@@ -61,6 +75,12 @@ public class Building extends Thread {
                         construct[i].getPosition().y + Garden.screenYPosition);
 //                construct[i].getRectangle().setPosition(construct[i].getPosition().x + Garden.screenXPosition,
 //                        construct[i].getPosition().y + Garden.screenYPosition);  //------ version 0.034
+            }
+        }
+        for (int i = 0; i<resourse.length; i++){
+            if (resourse[i] != null){
+                batch.draw(resourse[i].getImg(), resourse[i].getPosition().x + Garden.screenXPosition,
+                        resourse[i].getPosition().y + Garden.screenYPosition);
             }
         }
         if(buildType == 0){
