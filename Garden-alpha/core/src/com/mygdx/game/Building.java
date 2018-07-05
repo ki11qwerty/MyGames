@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;                  //строе�
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.Random;
+
 public class Building extends Thread {
     Texture nullPng;
     Texture[] powerStation;
@@ -13,7 +15,7 @@ public class Building extends Thread {
     Texture[][] constMap;
     Construction[] construct; //---------------                       потом перефигачить это все дело в список (!3)
     Texture[][] ghostPreConstruction;
-    Resourse[] resourse;
+    Resource[] resource;
     Texture[] forest;
     int constructingTime = 2500;
     Vector2 buildPosition;
@@ -48,18 +50,19 @@ public class Building extends Thread {
         ghostPreConstruction[1][1] = new Texture("construction/red2.png");
         rect = new Rectangle(-1000, -1000,0,0);
         typeOfGhost = nullPng;
-        resourse = new Resourse[10];
+       // resource = new Resource[10];
         forest = new Texture[2];
         forest[0] = new Texture("resourse/forest100x100.png");
         forest[1] = new Texture("resourse/forest150x150.png");
-        resourse[0] = new Forest(forest[1], forest[1].getWidth(),forest[1].getHeight(),       //3и проверочных, зафигачить потом метод по оозданию
-                1000, new Vector2(500,500));
-        resourse[1] = new Forest(forest[1], forest[1].getWidth(),forest[1].getHeight(),
-                1000, new Vector2(630,500));
-        resourse[2] = new Forest(forest[0], forest[0].getWidth(),forest[0].getHeight(),
-                1000, new Vector2(300,800));
-        resourse[3] = new Forest(forest[1], forest[1].getWidth(),forest[1].getHeight(),
-                1000, new Vector2(760,500));
+        createArrayOfResource(20);
+//        resource[0] = new Forest(forest[1], forest[1].getWidth(),forest[1].getHeight(),       //3и проверочных, зафигачить потом метод по оозданию
+//                1000, new Vector2(500,500));
+//        resource[1] = new Forest(forest[1], forest[1].getWidth(),forest[1].getHeight(),
+//                1000, new Vector2(630,500));
+//        resource[2] = new Forest(forest[0], forest[0].getWidth(),forest[0].getHeight(),
+//                1000, new Vector2(300,800));
+//        resource[3] = new Forest(forest[1], forest[1].getWidth(),forest[1].getHeight(),
+//                1000, new Vector2(760,500));
     }
 
     void render(SpriteBatch batch) {
@@ -77,10 +80,10 @@ public class Building extends Thread {
 //                        construct[i].getPosition().y + Garden.screenYPosition);  //------ version 0.034
             }
         }
-        for (int i = 0; i<resourse.length; i++){
-            if (resourse[i] != null){
-                batch.draw(resourse[i].getImg(), resourse[i].getPosition().x + Garden.screenXPosition,
-                        resourse[i].getPosition().y + Garden.screenYPosition);
+        for (int i = 0; i<resource.length; i++){
+            if (resource[i] != null){
+                batch.draw(resource[i].getImg(), resource[i].getPosition().x + Garden.screenXPosition,
+                        resource[i].getPosition().y + Garden.screenYPosition);
             }
         }
         if(buildType == 0){
@@ -100,7 +103,11 @@ public class Building extends Thread {
         for (int i = 0; i < construct.length; i++) {
             if (construct[i] != null)
                 construct[i].update();
-  }
+        }
+        for (int i = 0; i < resource.length; i++) {
+            if (resource[i] != null)
+                resource[i].update();
+        }
         if(buildType == 1) {
             rect.set(Gdx.input.getX() - 25, Gdx.graphics.getHeight() - Gdx.input.getY() - 25, 50, 50);
             if(checkAreaForBuilding(rect) == true){
@@ -278,15 +285,47 @@ public class Building extends Thread {
     }
 
 //
-public boolean checkAreaForBuilding(Rectangle rect) {            //version 2.0
-    for (int i = 0; i < construct.length; i++) {
+public boolean checkAreaForBuilding(Rectangle rect) {            //version 3.0
+    for (int i = 0; i < construct.length; i++) {                 //проверка на наличие строений на местности
         if (construct[i] == null) {
             continue;
         }
-       System.out.print("for внутри проверочного метода");
         if (construct[i].getRectangle().overlaps(rect) || buildType == 0)
             return false;
+
+    }
+    for (int i = 0; i < resource.length; i++) {                 //проверка на наличие ресурсов на местности
+        if (resource[i] == null) {
+            continue;
+        }
+        if (resource[i].getRectangle().overlaps(rect) || buildType == 0)
+            return false;
+
     }
     return true;
+}
+
+public void createArrayOfResource(int length) {      //надо перековырять!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    Random rand = new Random();
+    int count =0;
+    resource = new Resource[length];
+    for (int i = 0; i < length; i++) {
+        resource[i] = new Forest(forest[i%2], forest[i%2].getWidth(), forest[i%2].getHeight(),
+                1000, new Vector2(100 + rand.nextInt(Garden.WIDTH_WINDOW * 2 - 300),
+                100 + rand.nextInt(Garden.HEIGHT_WINDOW * 2 - 300)));
+        for (int j = 0; j < length; j++) {
+            count++;
+            if (resource[j] == null || i == j)
+                continue;
+            if (resource[i].getRectangle().overlaps(resource[j].getRectangle())) {
+                resource[i].setPosition(new Vector2(100 + rand.nextInt(Garden.WIDTH_WINDOW * 2 - 300),
+                        100 + rand.nextInt(Garden.HEIGHT_WINDOW * 2 - 300)));
+                j = -1;
+                System.out.println("пизда рулю");
+            }
+        }
+
+    }
+    System.out.println(count+"---------------------------------------------------");
 }
 }
