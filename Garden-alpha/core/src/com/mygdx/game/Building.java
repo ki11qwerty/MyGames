@@ -305,12 +305,13 @@ public boolean checkAreaForBuilding(Rectangle rect) {            //version 3.0
     return true;
 }
 
-public void createArrayOfResource(int length) {      //надо перековырять!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+public void createArrayOfResource(int length) {
     Random rand = new Random();
     int count =0;
     resource = new Resource[length];
     for (int i = 0; i < length; i++) {
-        resource[i] = new Forest(forest[i%2], forest[i%2].getWidth(), forest[i%2].getHeight(),
+        resource[i] = new Forest(forest[i%forest.length], forest[i%forest.length].getWidth(),
+                forest[i%forest.length].getHeight(),
                 1000, new Vector2(100 + rand.nextInt(Garden.WIDTH_WINDOW * 2 - 300),
                 100 + rand.nextInt(Garden.HEIGHT_WINDOW * 2 - 300)));
         for (int j = 0; j < length; j++) {
