@@ -242,7 +242,7 @@ public class Building extends Thread {
     public void building(Vector2 position, int type, int indexOfArray) {         //надо вхуярить проверку места и денег
         switch (type) {                                                          //отдельным методом
             case (1): {
-                System.out.println(Hero.HeroMoney);
+                System.out.println(Hero.HeroMoney);     //powerStation
                 if (Hero.HeroMoney >= 100 &&
                         typeOfGhost.equals(ghostPreConstruction[0][0])) {
                     Hero.HeroMoney -= 100;
@@ -255,7 +255,7 @@ public class Building extends Thread {
             }
             break;
             case (2): {
-                System.out.println(Hero.HeroMoney);
+                System.out.println(Hero.HeroMoney);      //LumberJack
                 if (Hero.HeroMoney >= 1000 &&
                         typeOfGhost.equals(ghostPreConstruction[1][0])) {
                     Hero.HeroMoney -= 1000;
@@ -271,8 +271,8 @@ public class Building extends Thread {
         buildInProgress = false;
     }
 
-    public void animationBuildingProgress(int buildIndexInArray) {
-        buildInProgress = false;
+    public void animationBuildingProgress(int buildIndexInArray) { //отрисовка обьекта с задержкой для каждого обьекта
+        buildInProgress = false;                                   //в отдельном потоке
         buildType = 0;
         for (int i = 0; i < 4; i++) {
             try {
@@ -305,8 +305,8 @@ public boolean checkAreaForBuilding(Rectangle rect) {            //version 3.0
     return true;
 }
 
-public void createArrayOfResource(int length) {
-    Random rand = new Random();
+public void createArrayOfResource(int length) { //создание массива леса с рандомными значениями положения,
+    Random rand = new Random();                 // и переГенерации вслучае если это место занято
     int count =0;
     resource = new Resource[length];
     for (int i = 0; i < length; i++) {
